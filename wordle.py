@@ -73,6 +73,17 @@ while True:
                     else:
                         print("That is not a valid letter or it is already in the list!")
                 print(fifth_slot_letters)
+        case "required":
+            required = []
+            while True:
+                letter = input("Enter any required letters (green): ")
+                if letter.lower() == "done":
+                    break
+                else:
+                    if len(letter) == 1 and letter.isalpha() and letter not in required:
+                        required.append(letter)
+                    else:
+                        print("That is not a valid letter or it is already in the list!")
         case "solve":
             generated_words = []
             for l1 in first_slot_letters:
@@ -83,15 +94,18 @@ while True:
                                 word = f"{l1}{l2}{l3}{l4}{l5}"
                                 print(word)
                                 generated_words.append(word)
-
             accepted_words = []
 
             with open("words.txt") as f:
                 words = f.read().lower()
-
             for word in generated_words:
-                if word in words:
-                    accepted_words.append(word)
+                required_in_word = 0
+                for letter in required:
+                    if letter in word:
+                        required_in_word += 1
+                if required_in_word == len(required):
+                    if word in words:
+                        accepted_words.append(word)
             
             print(accepted_words)
 
