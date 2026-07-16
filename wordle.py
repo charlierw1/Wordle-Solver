@@ -10,6 +10,9 @@ fifth_slot_letters = []
 cmds = '''
 help - List all commands
 exit - Exit the program
+letters - Enter the valid letters for the wordle
+required - enter the required letters for the wordle
+solver - solve the wordle
 '''
 
 while True:
