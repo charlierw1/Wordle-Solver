@@ -12,7 +12,7 @@ help - List all commands
 exit - Exit the program
 letters - Enter the valid letters for the wordle
 required - enter the required letters for the wordle
-solver - solve the wordle
+solve - solve the wordle
 '''
 
 while True:
@@ -79,7 +79,7 @@ while True:
         case "required":
             required = []
             while True:
-                letter = input("Enter any required letters (green): ")
+                letter = input("Enter any required letters (green or amber): ")
                 if letter.lower() == "done":
                     break
                 else:
