@@ -15,67 +15,50 @@ required - enter the required letters for the wordle
 solve - solve the wordle
 '''
 
-while True:
+def stringifyList(list):
+    string = ""
+    for item in list:
+                string += f"{item}, "
+    return string[:-2]
+
+def validLetter(letter, list):
+    if len(letter) == 1 and letter.isalpha() and letter not in list:
+        return True
+    else:
+        return False
+
+def validList(letter, list):
+    if letter.lower() == "done" and len(list) > 0:
+        return True
+    else:
+        return False
+
+def enterLetters(string_index, list):
+    list.clear()
+    while True:
+                letter = input(f"Enter the {string_index} letter possibilities (type done when all possible answers have been entered): ")
+                if validList(letter, list):
+                    break
+                else:
+                    if validLetter(letter, list):
+                        list.append(letter)
+                        print(stringifyList(list))
+                    else:
+                        print("That is not a valid letter or it is already in the list!")
+    return list
+
+try:
+  while True:
     command = input("Enter a command: ")
     match command.lower():
         case "help":
             print(cmds)
         case "letters":
-            first_slot_letters.clear()
-            while True:
-                letter = input("Enter the first letter (type done when all possible answers have been entered): ")
-                if letter.lower() == "done":
-                    break
-                else:
-                    if len(letter) == 1 and letter.isalpha() and letter not in first_slot_letters:
-                        first_slot_letters.append(letter)
-                    else:
-                        print("That is not a valid letter or it is already in the list!")
-                print(first_slot_letters)
-            second_slot_letters.clear()
-            while True:
-                letter = input("Enter the second letter (type done when all possible answers have been entered): ")
-                if letter.lower() == "done":
-                    break
-                else:
-                    if len(letter) == 1 and letter.isalpha() and letter not in second_slot_letters:
-                        second_slot_letters.append(letter)
-                    else:
-                        print("That is not a valid letter or it is already in the list!")
-                print(second_slot_letters)
-            third_slot_letters.clear()
-            while True:
-                letter = input("Enter the third letter (type done when all possible answers have been entered): ")
-                if letter.lower() == "done":
-                    break
-                else:
-                    if len(letter) == 1 and letter.isalpha() and letter not in third_slot_letters:
-                        third_slot_letters.append(letter)
-                    else:
-                        print("That is not a valid letter or it is already in the list!")
-                print(third_slot_letters)
-            fourth_slot_letters.clear()
-            while True:
-                letter = input("Enter the fourth letter (type done when all possible answers have been entered): ")
-                if letter.lower() == "done":
-                    break
-                else:
-                    if len(letter) == 1 and letter.isalpha() and letter not in fourth_slot_letters:
-                        fourth_slot_letters.append(letter)
-                    else:
-                        print("That is not a valid letter or it is already in the list!")
-                print(fourth_slot_letters)
-            fifth_slot_letters.clear()
-            while True:
-                letter = input("Enter the fifth letter (type done when all possible answers have been entered): ")
-                if letter.lower() == "done":
-                    break
-                else:
-                    if len(letter) == 1 and letter.isalpha() and letter not in fifth_slot_letters:
-                        fifth_slot_letters.append(letter)
-                    else:
-                        print("That is not a valid letter or it is already in the list!")
-                print(fifth_slot_letters)
+            enterLetters("first", first_slot_letters)
+            enterLetters("second", second_slot_letters)
+            enterLetters("third", third_slot_letters)
+            enterLetters("fourth", fourth_slot_letters)
+            enterLetters("fifth", fifth_slot_letters)
         case "required":
             required = []
             while True:
@@ -109,11 +92,13 @@ while True:
                 if required_in_word == len(required):
                     if word in words:
                         accepted_words.append(word)
-            
-            print(accepted_words)
-
+            print(f"The wordle could be {stringifyList(accepted_words)}.")
                 
         case "exit":
             exit()
         case unknown_command:
             print("Command not recognised, try 'help'")
+except KeyboardInterrupt:
+    print("\nExiting...")
+    exit()
+
