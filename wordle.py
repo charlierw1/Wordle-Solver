@@ -1,10 +1,11 @@
 
-# Available letter variables
+# Init Variables
 first_slot_letters = []
 second_slot_letters = []
 third_slot_letters = []
 fourth_slot_letters = []
 fifth_slot_letters = []
+required = []
 
 # Command List
 cmds = '''
@@ -18,7 +19,7 @@ solve - solve the wordle
 def stringifyList(list):
     string = ""
     for item in list:
-                string += f"{item}, "
+        string += f"{item}, "
     return string[:-2]
 
 def validLetter(letter, list):
@@ -72,16 +73,19 @@ try:
                         print("That is not a valid letter or it is already in the list!")
         case "solve":
             generated_words = []
-            for l1 in first_slot_letters:
-                for l2 in second_slot_letters:
-                    for l3 in third_slot_letters:
-                        for l4 in fourth_slot_letters:
-                            for l5 in fifth_slot_letters:
-                                word = f"{l1}{l2}{l3}{l4}{l5}"
-                                print(word)
-                                generated_words.append(word)
-            accepted_words = []
-
+            if len(first_slot_letters) > 0 or len(second_slot_letters) > 0 or len(third_slot_letters) > 0 or len(fourth_slot_letters) > 0 or len(fifth_slot_letters) > 0:
+                for l1 in first_slot_letters:
+                    for l2 in second_slot_letters:
+                        for l3 in third_slot_letters:
+                            for l4 in fourth_slot_letters:
+                                for l5 in fifth_slot_letters:
+                                    word = f"{l1}{l2}{l3}{l4}{l5}"
+                                    print(word)
+                                    generated_words.append(word)
+                accepted_words = []
+            else:
+                print("All slots require a letter!")
+                break
             with open("words.txt") as f:
                 words = f.read().lower()
             for word in generated_words:
@@ -101,4 +105,3 @@ try:
 except KeyboardInterrupt:
     print("\nExiting...")
     exit()
-
