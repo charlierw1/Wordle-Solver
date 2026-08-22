@@ -6,6 +6,7 @@ third_slot_letters = []
 fourth_slot_letters = []
 fifth_slot_letters = []
 required = []
+letter_message = "Enter any possible letters for the % slot: "
 
 # Command List
 cmds = '''
@@ -22,26 +23,14 @@ def stringifyList(list):
         string += f"{item}, "
     return string[:-2]
 
-def validLetter(letter, list):
-    if len(letter) == 1 and letter.isalpha() and letter not in list:
-        return True
-    else:
-        return False
-
-def validList(letter, list):
-    if letter.lower() == "done" and len(list) > 0:
-        return True
-    else:
-        return False
-
-def enterLetters(string_index, list):
+def enterLetters(message, list, ignore_empty=False):
     list.clear()
     while True:
-                letter = input(f"Enter the {string_index} letter possibilities (type done when all possible answers have been entered): ")
-                if validList(letter, list):
+                letter = input(message)
+                if letter.lower () == "done" and (len(list) > 0 or ignore_empty):
                     break
                 else:
-                    if validLetter(letter, list):
+                    if len(letter) == 1 and letter.isalpha() and letter not in list:
                         list.append(letter)
                         print(stringifyList(list))
                     else:
@@ -55,22 +44,14 @@ try:
         case "help":
             print(cmds)
         case "letters":
-            enterLetters("first", first_slot_letters)
-            enterLetters("second", second_slot_letters)
-            enterLetters("third", third_slot_letters)
-            enterLetters("fourth", fourth_slot_letters)
-            enterLetters("fifth", fifth_slot_letters)
+            enterLetters(letter_message.replace("%", "first"), first_slot_letters)
+            enterLetters(letter_message.replace("%", "second"), second_slot_letters)
+            enterLetters(letter_message.replace("%", "third"), third_slot_letters)
+            enterLetters(letter_message.replace("%", "fourth"), fourth_slot_letters)
+            enterLetters(letter_message.replace("%", "fifth"), fifth_slot_letters)
         case "required":
             required = []
-            while True:
-                letter = input("Enter any required letters (green or amber): ")
-                if letter.lower() == "done":
-                    break
-                else:
-                    if len(letter) == 1 and letter.isalpha() and letter not in required:
-                        required.append(letter)
-                    else:
-                        print("That is not a valid letter or it is already in the list!")
+            enterLetters("Enter any required letters (Green or Amber): ", required, True)
         case "solve":
             generated_words = []
             if len(first_slot_letters) > 0 or len(second_slot_letters) > 0 or len(third_slot_letters) > 0 or len(fourth_slot_letters) > 0 or len(fifth_slot_letters) > 0:
@@ -97,7 +78,6 @@ try:
                     if word in words:
                         accepted_words.append(word)
             print(f"The wordle could be {stringifyList(accepted_words)}.")
-                
         case "exit":
             exit()
         case unknown_command:
